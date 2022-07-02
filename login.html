@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="./js/api.js"></script>
     <link
     rel="stylesheet"
     media="screen and (max-width: 768px)"
@@ -14,9 +15,10 @@
 <body class="login-background">
     <form class="login-form" action="">
         <h1 class="title-login">Login</h1>
-        <input placeholder="E-mail" class="login-email" type="email">
-        <input placeholder="Senha" class="login-password" type="password">
-        <button class="login-button" type="submit"><a href="http://127.0.0.1:5500/notificacoes.html">Entrar</a></button>
+        <!-- <input placeholder="E-mail" class="login-email" type="email" id="email"> -->
+        <input id="nome">
+        <input placeholder="Senha" class="login-password" type="password" id="senha">
+        <button type="button" onclick="Verificar()">Entrar</button>
     </form>
 </body>
 </html>
