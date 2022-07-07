@@ -1,12 +1,20 @@
-function postar() {
-  var input_nome = document.querySelector("#nome");
-  var Nome = input_nome.value;
+var CpfCli;
 
-  var input_senha = document.querySelector("#senha");
-  var Senha = input_senha.value;
+window.onload = function() {
+    CpfCli = sessionStorage.getItem('cpf');
+
+        consultarNotificacao(CpfCli);   
+}
+
+function postar() {
+  var input_cpf = document.querySelector("#cpf");
+  var Cpf = input_cpf.value;
+
+  var input_cnh = document.querySelector("#cnh");
+  var Cnh = input_cnh.value;
 
   var url =
-    "https://localhost:44333/api/Login?Nome=" + Nome + "&Senha=" + Senha + "";
+    "https://localhost:44333/api/Login?Cpf=" + Cpf + "&Cnh=" + Cnh + "";
 
   var xhttp = new XMLHttpRequest();
   xhttp.open("POST", url, false);
@@ -16,19 +24,19 @@ function postar() {
 }
 
 function Verificar() {
-  var input_nome = document.querySelector("#nome").value;
-  console.log(input_nome);
-  var nome = input_nome;
+  var input_cpf = document.querySelector("#cpf").value;
+  console.log(input_cpf);
+  var cpf = input_cpf;
 
-  var input_senha = document.querySelector("#senha").value;
-  console.log(input_senha);
-  var senha = input_senha;
+  var input_cnh = document.querySelector("#cnh").value;
+  console.log(input_cnh);
+  var cnh = input_cnh;
 
   var url =
-    "https://localhost:44333/api/Login?Nome=" +
-    input_nome +
-    "&Cpf=" +
-    input_senha;
+    "https://localhost:44333/api/Login?Cpf=" +
+    input_cpf +
+    "&Cnh=" +
+    input_cnh;
 
   var xhttp = new XMLHttpRequest();
   xhttp.open("POST", url, false);
@@ -44,35 +52,39 @@ function Verificar() {
     document.getElementsById("status").values = "Sem Acesso";
   } else {
     window.location.replace("notificacoes.html");
-    sessionStorage.setItem("nome", nome);
-    sessionStorage.setItem("senha", senha);
+    sessionStorage.setItem("cpf", cpf);
+    sessionStorage.setItem("cnh", cnh);
   }
 }
 
-
-function consultarTarefasN(ClienteID){
+function consultarNotificacao(ClienteID) {
   console.log(ClienteID);
-  var url = `https://localhost:44333/api/Rotina?NCpf=`+ClienteID;
+  var url = `https://localhost:44333/api/Rotina?ClienteID=` + ClienteID;
   console.log(url);
   var nome = "";
 
-  $.get(url,data =>{
-      dados = JSON.parse(data)
-      console.log(data);
-      var div = '';
+  var finalizada = "Finalizada";
+  var Nfinalizada = "Não finalizada";
 
-      $(dados).each(function (index) {
-          if(nome != `${dados[index].nomeOS}`){
-              div += `<h6>${dados[index].nomeOS}</h6>`
-          }
-          if (dados[index].Finalizada == "True"){
-              div += `<div class="d-flex align-items-center"><label><input type="checkbox" checked disable class="option-input radio"><span class="label-text">${dados[index].item}</span></label></div>`;
-          }
-          else{
-              div += `<div class="d-flex align-items-center"><label><input type="checkbox" disable class="option-input radio"><span class="label-text">${dados[index].item}</span></label></div>`;
-          }
-          nome = `${dados[index].nomeOS}`
-      });
-      document.getElementById("tasks").innerHTML =div;
-  })
+  $.get(url, (data) => {
+    dados = JSON.parse(data);
+    console.log(data);
+    var div = "";
+
+    $(dados).each(function (index) {
+      if (nome != `${dados[index].nomeOS}`) {
+       
+        div += `<div><h3>Nome da ordem</h3><p>${dados[index].nomeOS}</p></div>`;
+      }
+      if (dados[index].Finalizada == "Sim") {
+        div += `<div style="color:green"><h3>Status</h3><p>Finalizada</p></div>`;
+        
+      } else {
+        div += `<div style="color:red"><h3>Status</h3><p>Não Finalizada</p></div>`;
+        
+      }
+      nome = `${dados[index].nomeOS}`;
+    });
+    document.getElementById("notificacao").innerHTML = div;
+  });
 }
